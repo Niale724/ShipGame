@@ -8,6 +8,7 @@ public class Ship : MonoBehaviour
     private float colliderRadius;
     private float colliderHalfWidth;
     private float colliderHalfHeight;
+    public float RotateDegreesPerSecond = 180f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,7 +32,14 @@ public class Ship : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        float rotationInput = Input.GetAxis("Rotate");
+        float rotationAmount = RotateDegreesPerSecond * Time.deltaTime;
+        if (rotationInput < 0)
+        {
+            rotationAmount *= -1;
+        }
+        transform.Rotate(Vector3.forward, rotationAmount);
+
     }
 
     private void OnBecameInvisible()
