@@ -459,7 +459,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a88622bd1bb6b6e43b71c7fc4f4c9691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ship
-  ThrustForce: 10
+  MoveForce: 10
+  BoostForce: 10
+  BreakForce: 8
+  MaxSpeed: 25
+  MaxBoostedSpeed: 15
 --- !u!50 &1062888193
 Rigidbody2D:
   serializedVersion: 5
