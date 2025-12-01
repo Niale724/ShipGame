@@ -7,7 +7,8 @@ public class Submarine : MonoBehaviour
     [SerializeField] private float speed;
 
    // [SerializeField] private HPSystem hpSystem; // drag and drop the HPSystem class here.
-    private bool isShieldOn;
+    private bool isShieldOn = false;
+    private int shieldStacks = 0;
     private HpSystem hpSystem;
 
     //these fields are for maintaining the submarine on the screen
@@ -44,6 +45,8 @@ public class Submarine : MonoBehaviour
         minY += halfHeight;
         maxY -= halfHeight;
         maxX -= halfWidth;
+
+        InitializeHpSystem();
     }
 
     // Update is called once per frame
@@ -173,5 +176,24 @@ public class Submarine : MonoBehaviour
         enabled = false;
         //Additional logic for submarine death can be added here
     }
+
+    //New method to collect shield
+    public void CollectShield()
+    {
+        shieldStacks++;
+        Debug.Log($"Shield collected. Available shields: {shieldStacks}");
+        //Additional logic for activating shield effects can be added here
+    }
+    /*public void ActivateShield(Obstacle obstacle)
+     * {
+     *    if (isShieldOn||shieldStacks > 0)
+         *{
+         *    if (shieldStacks > 0)
+         *    Debug.Log("Shield absorbed damage");
+         *    return;
+         *}
+         *
+         *hpSystem.DecreaseHP(obstacle.GetDamage());
+     * } */
 
 }

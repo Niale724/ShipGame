@@ -29,7 +29,7 @@ public class HpSystem : MonoBehaviour
         return currentHp;
     }
 
-    public bool ISAlive()
+    public bool IsAlive()
     {
         return currentHp>0;
     }

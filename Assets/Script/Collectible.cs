@@ -30,7 +30,7 @@ public class Collectible : MonoBehaviour
         ApplyVisualEffects();
     }
 
-    protected void ApplyVisualEffects()
+    protected virtual void ApplyVisualEffects()
     {
         // Float the collectible up and down
         // Just for some aesthetics ^w^
