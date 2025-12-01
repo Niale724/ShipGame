@@ -8,10 +8,12 @@ public class Submarine : MonoBehaviour
 
    // [SerializeField] private HPSystem hpSystem; // drag and drop the HPSystem class here.
     private bool isShieldOn;
+    private HpSystem hpSystem;
 
     //these fields are for maintaining the submarine on the screen
     private float minX, maxX, minY, maxY;
     private SpriteRenderer spriteRenderer;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -133,4 +135,43 @@ public class Submarine : MonoBehaviour
              transform.rotation = Quaternion.AngleAxis(-angle+90f, Vector3.forward);*/
         }
     }
+
+    //New methods for HP
+    private void InitializeHpSystem()
+    {
+        if (hpSystem == null)
+        {
+            hpSystem = GetComponent<HpSystem>();
+            if (hpSystem == null)
+            {
+                Debug.LogError("HpSystem component not found on Submarine GameObject.");
+            }
+        }
+        if (hpSystem != null)
+        {
+            hpSystem.OnHpChanged += HandleHpChanged;
+            hpSystem.OnDeath += HandleDeath;
+        }
+    }
+    public void HandleHpChanged(int currentHp, int changeHp)
+    {
+        Debug.Log($"Submarine HP changed. Current HP: {currentHp}, Change in HP: {changeHp}");
+        if (changeHp < 0)
+        {
+            Debug.Log("Submarine took damage.");
+        }
+        else if (changeHp > 0)
+        {
+            Debug.Log("Submarine healed.");
+        }
+    }
+
+    public void HandleDeath()
+    {
+        Debug.Log("Submarine destroyed.");
+        //Disable submarine controls or trigger death animation
+        enabled = false;
+        //Additional logic for submarine death can be added here
+    }
+
 }
