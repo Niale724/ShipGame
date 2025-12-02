@@ -7,11 +7,14 @@ public class Submarine : MonoBehaviour
     [SerializeField] private float speed;
 
    // [SerializeField] private HPSystem hpSystem; // drag and drop the HPSystem class here.
-    private bool isShieldOn;
+    private bool isShieldOn = false;
+    private int shieldStacks = 0;
+    private HpSystem hpSystem;
 
     //these fields are for maintaining the submarine on the screen
     private float minX, maxX, minY, maxY;
     private SpriteRenderer spriteRenderer;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -42,6 +45,8 @@ public class Submarine : MonoBehaviour
         minY += halfHeight;
         maxY -= halfHeight;
         maxX -= halfWidth;
+
+        InitializeHpSystem();
     }
 
     // Update is called once per frame
@@ -158,6 +163,63 @@ public class Submarine : MonoBehaviour
             Debug.Log("No CollisionManager found in the scene");
         }
     }
+
+    //New methods for HP
+    private void InitializeHpSystem()
+    {
+        if (hpSystem == null)
+        {
+            hpSystem = GetComponent<HpSystem>();
+            if (hpSystem == null)
+            {
+                Debug.LogError("HpSystem component not found on Submarine GameObject.");
+            }
+        }
+        if (hpSystem != null)
+        {
+            hpSystem.OnHpChanged += HandleHpChanged;
+            hpSystem.OnDeath += HandleDeath;
+        }
+    }
+    public void HandleHpChanged(int currentHp, int changeHp)
+    {
+        Debug.Log($"Submarine HP changed. Current HP: {currentHp}, Change in HP: {changeHp}");
+        if (changeHp < 0)
+        {
+            Debug.Log("Submarine took damage.");
+        }
+        else if (changeHp > 0)
+        {
+            Debug.Log("Submarine healed.");
+        }
+    }
+
+    public void HandleDeath()
+    {
+        Debug.Log("Submarine destroyed.");
+        //Disable submarine controls or trigger death animation
+        enabled = false;
+        //Additional logic for submarine death can be added here
+    }
+
+    //New method to collect shield
+    public void CollectShield()
+    {
+        shieldStacks++;
+        Debug.Log($"Shield collected. Available shields: {shieldStacks}");
+        //Additional logic for activating shield effects can be added here
+    }
+    /*public void ActivateShield(Obstacle obstacle)
+     * {
+     *    if (isShieldOn||shieldStacks > 0)
+         *{
+         *    if (shieldStacks > 0)
+         *    Debug.Log("Shield absorbed damage");
+         *    return;
+         *}
+         *
+         *hpSystem.DecreaseHP(obstacle.GetDamage());
+     * } */
 
 
 }
