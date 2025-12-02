@@ -49,8 +49,10 @@ public class Submarine : MonoBehaviour
     {
         
         //get input from the keys
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical"); 
+        //i used getaxisraw for instant response 
+        //this makes direction changes immediate
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float verticalInput = Input.GetAxisRaw("Vertical"); 
 
 
         //calculate the movement direction
@@ -91,46 +93,71 @@ public class Submarine : MonoBehaviour
     //elained used a rb2d.linearVelocity which is the physics velocity,
     //while i used directionMovement which is input based direction
     //that's why i nned to pass the vector3 directionMovement as a paramenter on this function.
-        void UpdateShipRotation(Vector3 directionMovement)
-    {
-        //For rotating the ship to face movement direction
-        //Only udate rotation if the ship is moving
-        //Otherwise it looks weird when the ship is stationary
+    void UpdateShipRotation(Vector3 directionMovement)
+
+            {
         if (directionMovement.sqrMagnitude > 0.01f)
-        {
-            //Calculate angle in degrees
-            //Atan2 returns radians, so convert to degrees
-            //It's abbreviation for "Arc Tangent 2"
-            
-
+            {
+                // handle horizontal flipping
                 if (directionMovement.x < 0)
-            {
-                spriteRenderer.flipX = true;
-            }
+                {
+                    spriteRenderer.flipX = true; //flip to face left
+                }
+                else if (directionMovement.x > 0)
+                {   
+                    spriteRenderer.flipX = false; //flip right
+                }
+                
+                //calculate angle on vertical movement
+                float angle = 0f;
+                
+                if (directionMovement.y> 0.01f)
+                    {
+                        //move up
+                        angle = 90f;
+                    }
 
-                else if (directionMovement.x> 0)
-            {
-                spriteRenderer.flipX =false;
+                else if (directionMovement.y <- 0.01f)
+                    {   //move down
+                        angle = -90f;
+                    }
+                else
+                    {
+                        //move horizontally
+                        angle = 0f;
+                    }
+            
+                //if sprite is flipped, invert the angle. 
+                //if this isn't done, the submarine would be upside down after pressing the left key and trying to move up or down
+                if (spriteRenderer.flipX)
+                    {
+                        angle = -angle;
+                    }
+                
+                //apply rotation
+                transform.rotation = Quaternion.Euler(0, 0, angle);
+            
             }
-
-              float angle = Mathf.Atan2(directionMovement.y, Mathf.Abs(directionMovement.x)) * Mathf.Rad2Deg;
-        
-        // Only rotate for vertical component
-        if (Mathf.Abs(directionMovement.y) > 0.01f)
-        {
-            transform.rotation = Quaternion.Euler(0, 0, angle);
         }
+
+    
+    //why do we add this here? 
+    //because unity calls this method on the GAMEOBJECT that HAS the collider that was hit
+    void OnTriggerEnter2D(Collider2D anotherCollider)
+    {
+        CollisionManager collisionManager = FindObjectOfType<CollisionManager>();
+
+        if (collisionManager != null)
+        {
+            collisionManager.SubmarineCollision(anotherCollider);
+
+        }
+
         else
         {
-            // If only moving horizontally, keep it flat
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
-            //Apply rotation to transform
-            //Quaternion.AngleAxis creates a rotation which rotates angle degrees around axis
-            //In simpler terms, it makes the ship face the direction of movement
-            //Useful for our submarine since it has a front and back
-             /*float angle = Mathf.Atan2(directionMovement.x, directionMovement.y) * Mathf.Rad2Deg;
-             transform.rotation = Quaternion.AngleAxis(-angle+90f, Vector3.forward);*/
+            Debug.Log("No CollisionManager found in the scene");
         }
     }
+
+
 }
