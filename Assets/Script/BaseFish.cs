@@ -18,15 +18,8 @@ public abstract class BaseFish : Collectible
     }
 
     protected abstract int GetHpValue();
-    protected override void ApplyCollectionEffects(Submarine sub)
+    public override void ApplyCollectionEffects(Submarine sub)
     {
-        HpSystem hpSystem = sub.GetComponent<HpSystem>();
-        if (hpSystem != null)
-        {
-            hpSystem.IncreaseHP(ptValue);
-            Debug.Log("Fish collected, HP+ " + ptValue);
-        }
-
         TriggerSpecialEffects(sub);
     }
     protected virtual void TriggerSpecialEffects(Submarine sub)

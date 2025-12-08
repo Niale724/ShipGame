@@ -39,17 +39,8 @@ public class Collectible : MonoBehaviour
     }
 
     // Method to handle collection
-    protected virtual void OnCollect(Submarine sub)
-    {
-        if (collected) return;
-        collected = true;
-        OnCollected?.Invoke(this);
-        Debug.Log($"{GetType().Name} collected with point value {ptValue}");
-        ApplyCollectionEffects(sub);
-        Destroy(gameObject);
-    }
 
-    protected virtual void ApplyCollectionEffects(Submarine sub)
+    public virtual void ApplyCollectionEffects(Submarine sub)
     {
         // Default implementation does nothing
         // Derived classes can override to provide specific effects
@@ -61,4 +52,9 @@ public class Collectible : MonoBehaviour
         ptValue = value;
     }
 
+    public void MarkAsCollected()
+    {
+        collected = true;
+        OnCollected?.Invoke(this);
+    }
 }
