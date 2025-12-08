@@ -10,6 +10,7 @@ public class Submarine : MonoBehaviour
     private bool isShieldOn = false;
     private int shieldStacks = 0;
     private HpSystem hpSystem;
+    public bool IsShieldActive => isShieldOn;
 
     //these fields are for maintaining the submarine on the screen
     private float minX, maxX, minY, maxY;
@@ -220,6 +221,18 @@ public class Submarine : MonoBehaviour
          *
          *hpSystem.DecreaseHP(obstacle.GetDamage());
      * } */
-
+    public void ConsumeShield()
+    {
+        if (shieldStacks > 0)
+        {
+            shieldStacks--;
+            isShieldOn = shieldStacks > 0;
+            Debug.Log($"Shield absorbed damage. Remaining shields: {shieldStacks}");
+        }
+        else
+        {
+            Debug.Log("No shields available to absorb damage.");
+        }
+    }
 
 }
