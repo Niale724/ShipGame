@@ -209,17 +209,46 @@ public class Submarine : MonoBehaviour
         Debug.Log($"Shield collected. Available shields: {shieldStacks}");
         //Additional logic for activating shield effects can be added here
     }
-    /*public void ActivateShield(Obstacle obstacle)
-     * {
-     *    if (isShieldOn||shieldStacks > 0)
-         *{
-         *    if (shieldStacks > 0)
-         *    Debug.Log("Shield absorbed damage");
-         *    return;
-         *}
-         *
-         *hpSystem.DecreaseHP(obstacle.GetDamage());
-     * } */
 
+    /*
+    public void ActivateShield(Obstacle obstacle)
+     {
+         if (isShieldOn||shieldStacks > 0)
+         {
+            if (shieldStacks > 0)
+                Debug.Log("Shield absorbed damage");
+            return;
+        }
+         
+         hpSystem.DecreaseHP(obstacle.GetDamage());
+      } 
+    */
+
+    
+
+    //bridge with collision system and hp/shield system
+    public void TakeDamage(int damage)
+    {
+        //check if there're shields to absorb the damage
+        
+        if (shieldStacks > 0)
+        {   
+
+            //shield absorbs the damage
+           shieldStacks--;
+           Debug.Log($"Shield absorbed {damage} damage! Shields left: {shieldStacks}");
+           return; 
+
+        }
+        // as there's no shields available, apply the HP system damage
+         if(hpSystem!= null)
+        {
+            hpSystem.DecreaseHP(damage);
+        }
+
+
+    }
+
+   
 
 }

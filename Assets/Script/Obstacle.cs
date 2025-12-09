@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-
+    
     protected int hpDamage; // protected so the children of Obstacle can have access to it
     protected float damageRadius; // how big the collision circle is
 
@@ -16,19 +16,20 @@ public class Obstacle : MonoBehaviour
     {
         obstacleCollider = GetComponent<CircleCollider2D>();
 
-        //get or add a ciclecollider2d component
+        //get or add a ciclecollider2d component for collision detection
         if (obstacleCollider == null)
         {
             obstacleCollider = gameObject.AddComponent<CircleCollider2D>();
         }
 
-        //set the collider to be trigger
+        //set the collider to be a trigger (this doesn't block the movement)
         obstacleCollider.isTrigger = true;
 
         //set the radius
         obstacleCollider.radius = damageRadius;
     }
-
+     
+     //this is called by collisionManager tl determine how much damage to apply for each obstacle
     public int GetDamage()
     {
         return hpDamage;

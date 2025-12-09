@@ -47,6 +47,10 @@ public class CollisionManager : MonoBehaviour
 
     }
     */
+
+    // this function determines what type of object hits the submarine and take it to the appropiate handler
+
+    //we do this by the use of tags
     public void SubmarineCollision(Collider2D otherCollider)
     {
         if (otherCollider == null)
@@ -70,7 +74,12 @@ public class CollisionManager : MonoBehaviour
         else
 
         {
-            Debug.Log("Submarine was hit by tagless" + otherCollider.gameObject.name);
+            Debug.Log("Submarine was hit by " + otherCollider.gameObject.name);
+            Obstacle obstacle = otherCollider.GetComponent<Obstacle>();
+            if (obstacle != null)
+            {   Debug.Log("Found obstacle coomponent on untagged object");
+                ObstacleCollision(otherCollider);
+            }
         }
         
 
@@ -86,6 +95,10 @@ public class CollisionManager : MonoBehaviour
     {
         Debug.Log("Shield Collected " + shieldCollider.gameObject.name);
 
+        //add shield to our stack
+        submarine.CollectShield();
+        
+        //remove shield from the game screen
         Destroy(shieldCollider.gameObject);
     }
 
@@ -93,18 +106,36 @@ public class CollisionManager : MonoBehaviour
     {
         Debug.Log("Obstacle Hit " + obstacleCollider.gameObject.name);
 
-        Destroy(obstacleCollider.gameObject);
+        //get obstacle component to identify obstacle type and damage value
+        Obstacle obstacle = obstacleCollider.GetComponent<Obstacle>();
+
+        if (obstacle != null)
+        {
+            //get damage value from obstacle
+            int damage = obstacle.GetDamage();
+            
+           Debug.Log("HP deduction from this obstacle was " + damage + "HP");
+
+            //checks shields and THEN the HP, this function is on submarine 
+           submarine.TakeDamage(damage);
+
+            //remove obstacle from gameManager tracking list
+            GameManager.Instance.RemoveObstacle(obstacle);
+
+            //removes the obstacle from the game screen
+            Destroy(obstacleCollider.gameObject);
+            
+        }
+        else
+        {
+            
+            Debug.Log("No obstacle component " + obstacleCollider.gameObject.name);
+        
+
+        }
+        
+
     }
 
-    
 
-   
-
-
-    // Update is called once per frame
-    /*
-    void Update()
-    {
-        
-    }*/
 }
