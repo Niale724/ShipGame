@@ -50,7 +50,7 @@ public class CollisionManager : MonoBehaviour
 
     // this function determines what type of object hits the submarine and take it to the appropiate handler
 
-    //we do this by the use of tags
+    //we do this by the usage of tags 
     public void SubmarineCollision(Collider2D otherCollider)
     {
         if (otherCollider == null)
@@ -117,7 +117,9 @@ public class CollisionManager : MonoBehaviour
            Debug.Log("HP deduction from this obstacle was " + damage + "HP");
 
             //checks shields and THEN the HP, this function is on submarine 
-           submarine.TakeDamage(damage);
+           submarine.ConsumeShield(); //!!! might have problem, go back to elains functions if anything, 
+           // my function is commentated out just in case
+
 
             //remove obstacle from gameManager tracking list
             GameManager.Instance.RemoveObstacle(obstacle);
