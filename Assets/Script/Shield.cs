@@ -14,8 +14,10 @@ public class Shield : Collectible
     {
         
     }
-
-    protected override void ApplyCollectionEffects(Submarine sub)
+    
+    //changed this from protected to public since the base class (collective) is public.
+    // why? when a method is overriden, the override can't be more restrictive than the base class.
+    public override void ApplyCollectionEffects(Submarine sub)
     {
         if (GameManager.Instance != null)
         {
