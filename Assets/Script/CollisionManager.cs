@@ -7,7 +7,7 @@ public class CollisionManager : MonoBehaviour
     //reference to the other system
     //we need references because we are gonna use these other system's methods when the collisions happen 
     //[SerializeField] private GameManager gameManager;
-    //[SerializeField] private HPSystem hpSystem;
+    [SerializeField] private HpSystem hpSystem;
 
     //reference to submarine class
 
@@ -78,29 +78,74 @@ public class CollisionManager : MonoBehaviour
 
     private void FishCollision(Collider2D fishCollider)
     {
-        Debug.Log("Fish Collected " + fishCollider.gameObject.name);
+        if (fishCollider == null) return;
 
-        Destroy(fishCollider.gameObject);
+        GameObject fishObj = fishCollider.gameObject;
+        Debug.Log($"Fish Collected: {fishObj.name}");
+
+        var collectible = fishObj.GetComponent<Collectible>();
+        if (collectible == null)
+        {
+            Destroy(fishObj);
+            return;
+        }
+
+        collectible.MarkAsCollected();
+
+        if (hpSystem != null)
+        {
+            hpSystem.IncreaseHP(collectible.PtValue);
+            Debug.Log($"HP +{collectible.PtValue}");
+        }
+
+        Destroy(fishObj);
     }
      private void ShieldCollision(Collider2D shieldCollider)
     {
-        Debug.Log("Shield Collected " + shieldCollider.gameObject.name);
+        if (shieldCollider == null) return;
 
-        Destroy(shieldCollider.gameObject);
+        GameObject shieldObj = shieldCollider.gameObject;
+        Debug.Log($"Shield Collected: {shieldObj.name}");
+
+        var collectible = shieldObj.GetComponent<Collectible>();
+        if (collectible != null)
+        {
+            collectible.MarkAsCollected();
+        }
+
+        if (submarine != null)
+        {
+            submarine.ShieldStacks++;
+            Debug.Log("Shield Collected " + shieldCollider.gameObject.name);
+        }
     }
 
     private void ObstacleCollision(Collider2D obstacleCollider)
     {
         Debug.Log("Obstacle Hit " + obstacleCollider.gameObject.name);
 
+        Obstacle obstacle = obstacleCollider.GetComponent<Obstacle>();
+        int damage = 1;
+        if (obstacle != null)
+        {
+            damage = obstacle.GetDamage();
+        }
+
+        if(submarine != null && submarine.ShieldStacks > 0)
+        {
+            submarine.ConsumeShield();
+            Debug.Log("Shield absorbed the damage. Remaining Shields: " + submarine.ShieldStacks);
+        }
+        else if (hpSystem != null)
+        {
+            hpSystem.DecreaseHP(damage);
+            Debug.Log($"Submarine took {damage} damage. HP: {hpSystem.CurrentHp}");
+        }
+
         Destroy(obstacleCollider.gameObject);
     }
 
-    
-
    
-
-
     // Update is called once per frame
     /*
     void Update()

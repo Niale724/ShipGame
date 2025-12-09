@@ -10,6 +10,15 @@ public class Submarine : MonoBehaviour
     private bool isShieldOn = false;
     private int shieldStacks = 0;
     private HpSystem hpSystem;
+    public int ShieldStacks
+    {
+        get=> shieldStacks;
+        set
+        {
+            shieldStacks=Mathf.Max(0,value);
+            isShieldOn = shieldStacks > 0;
+        }
+    }
     public bool IsShieldActive => isShieldOn;
 
     //these fields are for maintaining the submarine on the screen
@@ -204,12 +213,6 @@ public class Submarine : MonoBehaviour
     }
 
     //New method to collect shield
-    public void CollectShield()
-    {
-        shieldStacks++;
-        Debug.Log($"Shield collected. Available shields: {shieldStacks}");
-        //Additional logic for activating shield effects can be added here
-    }
     /*public void ActivateShield(Obstacle obstacle)
      * {
      *    if (isShieldOn||shieldStacks > 0)

@@ -15,20 +15,20 @@ public class Shield : Collectible
         
     }
 
-    protected override void ApplyCollectionEffects(Submarine sub)
-    {
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.OnShieldCollected(this);
-        }
-        else
-        {
-            Debug.LogWarning("GameManager instance is not available.");
-        }
-    }
-
     protected override void ApplyVisualEffects()
     {
         base.ApplyVisualEffects();
+    }
+
+    public override void MarkAsCollected()
+    {
+        if (!collected)
+        {
+            collected = true;
+            OnCollected?.Invoke(this);
+
+            Destroy(gameObject, 0.1f); 
+            Debug.Log("Shield marked as collected and scheduled for destruction");
+        }
     }
 }

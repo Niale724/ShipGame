@@ -3,8 +3,8 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour
 {
 
-    protected int hpDamage; // protected so the children of Obstacle can have access to it
-    protected float damageRadius; // how big the collision circle is
+    [SerializeField] protected int hpDamage=1; // protected so the children of Obstacle can have access to it
+    [SerializeField] protected float damageRadius=0.5f; // how big the collision circle is
 
     // a way to detect collisions
     protected CircleCollider2D obstacleCollider;

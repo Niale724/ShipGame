@@ -52,7 +52,7 @@ public class Collectible : MonoBehaviour
         ptValue = value;
     }
 
-    public void MarkAsCollected()
+    public virtual void MarkAsCollected()
     {
         collected = true;
         OnCollected?.Invoke(this);

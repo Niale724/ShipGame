@@ -97,7 +97,7 @@ public abstract class BaseSpawner : MonoBehaviour
         spawnedObjects.Add(spawnedObject);
         currentSpawnCount++;
     }
-    private void CleanupDestroyedObjects()
+    protected virtual void CleanupDestroyedObjects()
     {
         for (int i = spawnedObjects.Count - 1; i >= 0; i--)
         {
@@ -105,8 +105,13 @@ public abstract class BaseSpawner : MonoBehaviour
             {
                 spawnedObjects.RemoveAt(i);
                 currentSpawnCount= Mathf.Max(0, currentSpawnCount - 1);
+                OnObjectDestroyed();
             }
         }
+    }
+    protected virtual void OnObjectDestroyed()
+    {
+        // Base implementation
     }
 
     public void StartSpawning() => isActive = true;
