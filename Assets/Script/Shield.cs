@@ -15,6 +15,7 @@ public class Shield : Collectible
         
     }
 
+
     protected override void ApplyVisualEffects()
     {
         base.ApplyVisualEffects();

@@ -47,6 +47,10 @@ public class CollisionManager : MonoBehaviour
 
     }
     */
+
+    // this function determines what type of object hits the submarine and take it to the appropiate handler
+
+    //we do this by the usage of tags 
     public void SubmarineCollision(Collider2D otherCollider)
     {
         if (otherCollider == null)
@@ -70,7 +74,12 @@ public class CollisionManager : MonoBehaviour
         else
 
         {
-            Debug.Log("Submarine was hit by tagless" + otherCollider.gameObject.name);
+            Debug.Log("Submarine was hit by " + otherCollider.gameObject.name);
+            Obstacle obstacle = otherCollider.GetComponent<Obstacle>();
+            if (obstacle != null)
+            {   Debug.Log("Found obstacle coomponent on untagged object");
+                ObstacleCollision(otherCollider);
+            }
         }
         
 
@@ -152,4 +161,5 @@ public class CollisionManager : MonoBehaviour
     {
         
     }*/
+
 }
