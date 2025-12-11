@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
+using System;
 public class GameManager: MonoBehaviour
-{   
+{
     //Singleton -- one instance of a class exists on the entire game
     public static GameManager Instance { get; private set; } // all scripts can access this static variable
    
 //game state
 
-   private int totalFishScoredCollected =0; //tracks total of fish points collected
-   private const int winScore =100; // winning condition
+   public int totalFishScoredCollected { get; private set; } //tracks total of fish points collected
+    public static Action<int> OnFishCollected { get; internal set; }
+
+    private const int winScore =100; // winning condition
 
 //references
 
@@ -176,7 +179,11 @@ public void TakeDamage(int damage)
 //score tracking
 public void FishCollected (BaseFish fish)
     {
-        totalFishScoredCollected += fish.PtValue;
+        totalFishScoredCollected++;
+
+        GameHUD hud = FindObjectOfType<GameHUD>();
+        hud?.SetFish(totalFishScoredCollected);
+
         IsWin();
     }
 

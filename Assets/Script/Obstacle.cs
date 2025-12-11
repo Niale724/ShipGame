@@ -7,8 +7,14 @@ public class Obstacle : MonoBehaviour
 
     // a way to detect collisions
     protected CircleCollider2D obstacleCollider;
-    
-    
+
+    private bool hasDealtDamage = false;
+    public bool HasDealtDamage => hasDealtDamage;
+    public void MarkAsHit()
+    {
+        hasDealtDamage = true;
+    }
+
     //protected for the inheretance and virtual so the children can 
     //overide this method (implement their own versions)
     protected virtual void Start()

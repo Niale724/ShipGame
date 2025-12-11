@@ -167,7 +167,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Blobfish Spritesheet_P_0
+      name: 0
       rect:
         serializedVersion: 2
         x: 0
@@ -175,7 +175,7 @@ TextureImporter:
         width: 33
         height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -189,7 +189,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blobfish Spritesheet_P_1
+      name: 7
       rect:
         serializedVersion: 2
         x: 32
@@ -197,7 +197,7 @@ TextureImporter:
         width: 33
         height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -219,7 +219,7 @@ TextureImporter:
         width: 63
         height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -241,7 +241,7 @@ TextureImporter:
         width: 32
         height: 21
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -255,16 +255,16 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blobfish Spritesheet_P_4
+      name: 1
       rect:
         serializedVersion: 2
-        x: 1
-        y: 191
-        width: 64
+        x: 0
+        y: 190
+        width: 30
         height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.45000002}
+      border: {x: 0, y: 0, z: 30, w: 0}
       customData: 
       outline: []
       physicsShape: []
@@ -285,7 +285,7 @@ TextureImporter:
         width: 33
         height: 21
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -307,7 +307,7 @@ TextureImporter:
         width: 33
         height: 21
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -321,15 +321,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blobfish Spritesheet_P_7
+      name: 2
       rect:
         serializedVersion: 2
         x: 1
         y: 159
-        width: 64
+        width: 30
         height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4666667, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -351,7 +351,7 @@ TextureImporter:
         width: 31
         height: 26
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -373,7 +373,7 @@ TextureImporter:
         width: 32
         height: 21
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -387,7 +387,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blobfish Spritesheet_P_10
+      name: 3
       rect:
         serializedVersion: 2
         x: 0
@@ -395,7 +395,7 @@ TextureImporter:
         width: 33
         height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -417,7 +417,7 @@ TextureImporter:
         width: 32
         height: 27
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -439,7 +439,7 @@ TextureImporter:
         width: 33
         height: 21
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -453,7 +453,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blobfish Spritesheet_P_13
+      name: 4
       rect:
         serializedVersion: 2
         x: 1
@@ -461,7 +461,7 @@ TextureImporter:
         width: 32
         height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -483,7 +483,7 @@ TextureImporter:
         width: 32
         height: 25
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -505,7 +505,7 @@ TextureImporter:
         width: 32
         height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -527,7 +527,7 @@ TextureImporter:
         width: 34
         height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -541,7 +541,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blobfish Spritesheet_P_17
+      name: 5
       rect:
         serializedVersion: 2
         x: 0
@@ -549,7 +549,7 @@ TextureImporter:
         width: 33
         height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -563,7 +563,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Blobfish Spritesheet_P_18
+      name: 6
       rect:
         serializedVersion: 2
         x: 0
@@ -571,7 +571,7 @@ TextureImporter:
         width: 33
         height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -588,7 +588,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: bbce637505fffc84f8fad4222d0c4fad
     internalID: 0
     vertices: []
     indices: 
@@ -598,23 +598,23 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Blobfish Spritesheet_P_0: 2322817902865298626
-      Blobfish Spritesheet_P_1: 5622410017099821530
-      Blobfish Spritesheet_P_10: 5703200300435352701
+      0: 2322817902865298626
+      1: 356049019153300932
+      2: -5984129112869074453
+      3: 5703200300435352701
+      4: 2997605292755724670
+      5: 4010826374370606126
+      6: -438738039638013293
+      7: 5622410017099821530
       Blobfish Spritesheet_P_11: 739232764063357682
       Blobfish Spritesheet_P_12: -5962748193141354844
-      Blobfish Spritesheet_P_13: 2997605292755724670
       Blobfish Spritesheet_P_14: 3439510308679338991
       Blobfish Spritesheet_P_15: -8566300758759031575
       Blobfish Spritesheet_P_16: -2434651629992234170
-      Blobfish Spritesheet_P_17: 4010826374370606126
-      Blobfish Spritesheet_P_18: -438738039638013293
       Blobfish Spritesheet_P_2: -5237227743733377601
       Blobfish Spritesheet_P_3: 507880549049834122
-      Blobfish Spritesheet_P_4: 356049019153300932
       Blobfish Spritesheet_P_5: -6064118731973122878
       Blobfish Spritesheet_P_6: 9058105803182438827
-      Blobfish Spritesheet_P_7: -5984129112869074453
       Blobfish Spritesheet_P_8: 1568707220780112913
       Blobfish Spritesheet_P_9: 4745460126302107916
   mipmapLimitGroupName: 

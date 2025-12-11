@@ -47,6 +47,7 @@ public class Collectible : MonoBehaviour
         // For example, trigger shield, heal submarine, etc.
     }
 
+    public bool IsCollected => collected;
     public void SetPtValue(int value)
     {
         ptValue = value;
@@ -54,6 +55,8 @@ public class Collectible : MonoBehaviour
 
     public virtual void MarkAsCollected()
     {
+        if (collected) return;
+
         collected = true;
         OnCollected?.Invoke(this);
     }

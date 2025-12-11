@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
@@ -13,7 +14,7 @@ public class Submarine : MonoBehaviour
     private Stack<int> shieldStack = new Stack<int>();
     private bool isShieldOn = false;
     private HpSystem hpSystem;
-
+    public event Action<int> OnShieldChanged;
     public int ShieldStacks
     {
         get=> shieldStack.Count;
@@ -214,11 +215,11 @@ public class Submarine : MonoBehaviour
         }
         if (hpSystem != null)
         {
-            hpSystem.OnHpChanged += HandleHpChanged;
+            //hpSystem.OnHpChanged += HandleHpChanged;
             hpSystem.OnDeath += HandleDeath;
         }
     }
-    public void HandleHpChanged(int currentHp, int changeHp)
+    /*public void HandleHpChanged(int currentHp, int changeHp)
     {
         Debug.Log($"Submarine HP changed. Current HP: {currentHp}, Change in HP: {changeHp}");
         if (changeHp < 0)
@@ -229,7 +230,7 @@ public class Submarine : MonoBehaviour
         {
             Debug.Log("Submarine healed.");
         }
-    }
+    }*/
 
     public void HandleDeath()
     {
@@ -247,10 +248,12 @@ public class Submarine : MonoBehaviour
     {
         shieldStack.Push(1);
         isShieldOn = true;
-        if (shieldObj != null)
-            shieldObj.SetActive(true);
+        //if (shieldObj != null)
+            //shieldObj.SetActive(true);
         Debug.Log($"Shield collected. Available shields: {shieldStack.Count}");
         //Additional logic for activating shield effects can be added here
+        OnShieldChanged?.Invoke(ShieldStacks);
+
     }
     public void ConsumeShield()
     {
@@ -264,11 +267,14 @@ public class Submarine : MonoBehaviour
             {
                 shieldObj.SetActive(false);
             }
+            OnShieldChanged?.Invoke(ShieldStacks);
         }
         else
         {
             Debug.Log("No shields available to absorb damage.");
         }
+  
+
     }
     public bool HasShield()
     {

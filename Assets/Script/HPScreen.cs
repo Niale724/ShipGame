@@ -1,52 +1,29 @@
-using TMPro;
 using UnityEngine;
+using TMPro;
 
 public class HPScreen : MonoBehaviour
 {
-    private TextMeshProUGUI HPText;
-    private HpSystem hpSystem;
+    [SerializeField] private HpSystem hpSystem;
+    [SerializeField] private TextMeshProUGUI finalHPText;
 
-    void Start()
-    {
-        Debug.Log("HPScreen Start() called");
-        
-        HPText = GetComponent<TextMeshProUGUI>();
-        
-        if (HPText == null)
-        {
-            return;
-        }
-
-        Submarine submarine = FindAnyObjectByType<Submarine>();
-
-        if (submarine != null)
-        {
-            hpSystem = submarine.GetComponent<HpSystem>();
-
-            if (hpSystem != null)
-            {
-                hpSystem.OnHpChanged += UpdateHPScreen;
-                UpdateHPScreen(hpSystem.GetCurrentHp(), 0);
-            }
-    
-        }
-       
-    }
-
-    void UpdateHPScreen(int currentHP, int change)
-    {
-        
-        if(HPText != null)
-        {
-            HPText.text = $"HP: {currentHP}";
-        }
-    }
-
-    void OnDestroy()
+    private void Start()
     {
         if (hpSystem != null)
         {
-            hpSystem.OnHpChanged -= UpdateHPScreen;
+            hpSystem.OnHpChanged += UpdateHPScreen;
+            UpdateHPScreen(hpSystem.CurrentHp);
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (hpSystem != null)
+            hpSystem.OnHpChanged -= UpdateHPScreen;
+    }
+
+    private void UpdateHPScreen(int hp)
+    {
+        if (finalHPText != null)
+            finalHPText.text = "Final HP: " + hp;
     }
 }

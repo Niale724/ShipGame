@@ -18,6 +18,7 @@ public class FSpawner : BaseSpawner
         Instantiate(fishToSpawn, transform.position + randomOffset, Quaternion.identity);
 
         spawnTimer = 0f;
+        isActive = true;
         Debug.Log("Spawned Fish (Weighted): " + fishToSpawn.name);
 
     }

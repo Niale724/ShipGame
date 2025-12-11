@@ -5,9 +5,9 @@ using UnityEngine;
 public class CollisionManager : MonoBehaviour
 
 {   
-  
-   
+ 
     [SerializeField] private Submarine submarine;
+    [SerializeField] private HpSystem hpSystem;
 
     /*monobehavior class that can be attached to a gameobject*/
 
@@ -15,8 +15,7 @@ public class CollisionManager : MonoBehaviour
     {
         Debug.Log("Collision Manager started working");
     }
-<<<<<<< Updated upstream
-=======
+
     //rigidbody2d unity this object participated IN PHYSICS.
     //collider2d defines the collision SHAPE.
 
@@ -27,12 +26,6 @@ public class CollisionManager : MonoBehaviour
     {
         SubmarineCollision(another);
     }
-
-
->>>>>>> Stashed changes
-    // this function determines what type of object hits the submarine and take it to the appropiate handler
-
-    //we do this by the usage of tags 
     public void SubmarineCollision(Collider2D otherCollider)
     {
         Debug.Log("Hit: " + otherCollider.tag);
@@ -70,25 +63,33 @@ public class CollisionManager : MonoBehaviour
 
 //in this method we track fish HP for our victory method
 //connect to hp healing system and gets pointvalue from basefish
-    private void FishCollision(Collider2D fishCollider)
+   private void FishCollision(Collider2D fishCollider)
     {
-        BaseFish fish = fishCollider.GetComponent<BaseFish>();
+        if (fishCollider == null) return;
 
-        if (fish != null)
+        var collectible = fishCollider.GetComponent<Collectible>();
+        if (collectible == null) return;
+
+        if (collectible.IsCollected)
         {
-            //tell GameManager to add HP
-            GameManager.Instance.FishCollected(fish);
-            
-            //apply hp healing
-            fish.ApplyCollectionEffects(submarine);
-
-            //remove fish
-            Destroy(fishCollider.gameObject);
+            Debug.Log("Fish already collected, ignoring duplicate collision.");
+            return;
         }
+
+        collectible.MarkAsCollected();
+        GameManager.Instance.FishCollected(null);
+
+        Debug.Log($"Fish Collected: {fishCollider.gameObject.name}");
+
+        hpSystem?.IncreaseHP(collectible.PtValue);
+
+        Destroy(fishCollider.gameObject);
     }
-     private void ShieldCollision(Collider2D shieldCollider)
+
+
+private void ShieldCollision(Collider2D shieldCollider)
     {
-        Debug.Log("Shield Collected " + shieldCollider.gameObject.name);
+        if (shieldCollider == null) return;
 
         GameObject shieldObj = shieldCollider.gameObject;
         Debug.Log($"Shield Collected: {shieldObj.name}");
@@ -96,6 +97,12 @@ public class CollisionManager : MonoBehaviour
         var collectible = shieldObj.GetComponent<Collectible>();
         if (collectible != null)
         {
+            if (collectible.IsCollected)
+            {
+                Debug.Log("Shield already collected, ignoring duplicate collision.");
+                return;
+            }
+
             collectible.MarkAsCollected();
         }
 
@@ -115,34 +122,31 @@ public class CollisionManager : MonoBehaviour
         //get obstacle component to identify obstacle type and damage value
         Obstacle obstacle = obstacleCollider.GetComponent<Obstacle>();
 
-        if (obstacle != null)
+        if (obstacle == null)
+            return;
+
+        if (obstacle.HasDealtDamage)
         {
-            //get damage value from obstacle
-            int damage = obstacle.GetDamage();
-            
-           Debug.Log("HP deduction from this obstacle was " + damage + "HP");
-
-            //checks shields and THEN the HP, this function is on submarine 
-           submarine.ConsumeShield(); 
-
-            //apply damage through gameManager 
-            GameManager.Instance.TakeDamage(damage);
-
-            //remove obstacle from gameManager tracking list
-            GameManager.Instance.RemoveObstacle(obstacle);
-
-            //removes the obstacle from the game screen
-            Destroy(obstacleCollider.gameObject);
-            
+            Debug.Log("Obstacle already dealt damage, ignoring duplicate collision.");
+            return;
         }
-        else
+
+        obstacle.MarkAsHit();
+
+        int damage = obstacle.GetDamage();
+
+        if (submarine != null && submarine.HasShield())
         {
-            
-            Debug.Log("No obstacle component " + obstacleCollider.gameObject.name);
-        
-
+            submarine.ConsumeShield();
+            Debug.Log("Shield absorbed the damage. Remaining Shields: " + submarine.ShieldStacks);
         }
-        
+        else if (hpSystem != null)
+        {
+            hpSystem.DecreaseHP(damage);
+            Debug.Log($"Submarine took {damage} damage. HP: {hpSystem.CurrentHp}");
+        }
+
+        Destroy(obstacleCollider.gameObject);
 
     }
 
