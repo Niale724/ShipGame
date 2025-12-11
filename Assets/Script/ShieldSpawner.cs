@@ -11,15 +11,27 @@ public class ShieldSpawner : BaseSpawner
         base.InitializeSpawner();
         maxSpawnCount = 1;
 
-        if (startWithShield)
+        if(startWithShield && CanSpawn())
         {
-            ScheduleImmediateSpawn();
+            SpawnImmediate();
+            isWaitingForSpawn = false;
         }
+        Debug.Log("ShieldSpawner initialized.");
     }
 
     protected override void Update()
     {
-        base.Update();
+        if (!isActive) return;
+        spawnTimer += Time.deltaTime;
+        Debug.Log($"[BaseSpawner] Timer: {spawnTimer:F2}, Interval: {spawnInterval}, " +
+              $"CurrentCount: {currentSpawnCount}, CanSpawn: {CanSpawn()}");
+        if (spawnTimer >= spawnInterval && CanSpawn())
+        {
+            Debug.Log("[BaseSpawner] Auto-spawn triggered!");
+            SpawnObject();
+            spawnTimer = 0.0f;
+        }
+        CleanupDestroyedObjects();
         ProcessSpawnQueue();
     }
 
@@ -28,47 +40,37 @@ public class ShieldSpawner : BaseSpawner
         while (spawnEvents.Count > 0 && Time.time >= spawnEvents.Peek())
         {
             float scheduledTime = spawnEvents.Dequeue();
+            isWaitingForSpawn = false;
+
             Debug.Log($"Processing shield spawn event. " +
                 $"Scheduled: {scheduledTime}, Current: {Time.time}");
 
-            isWaitingForSpawn = false;
-
             if (currentSpawnCount == 0)
             {
-                spawnTimer = spawnInterval;
+                SpawnObject();
+                Debug.Log("Shield respawned successfully.");
             }
             else
             {
                 Debug.Log("Shield already present on field, skipping this spawn event");
-                ScheduleNextSpawnEvent(respawnTime * 0.5f);
             }
         }
     }
     protected override void OnObjectDestroyed()
     {
-        if (currentSpawnCount == 0)
+        if (currentSpawnCount == 0 && !isWaitingForSpawn)
         {
+            float nextSpawnTime = Time.time + respawnTime;
+            spawnEvents.Enqueue(nextSpawnTime);
+            isWaitingForSpawn = true;
+
             Debug.Log($"Shield destroyed. Scheduling respawn " +
-                $"in {respawnTime} seconds");
-            ScheduleNextSpawnEvent(respawnTime);
+                $"in {respawnTime} seconds"); 
         }
     }
-    private void ScheduleNextSpawnEvent(float delay)
+    protected override bool CanSpawn()
     {
-        if (isWaitingForSpawn) return;
-
-        float spawnTime = Time.time + delay;
-        spawnEvents.Enqueue(spawnTime);
-        isWaitingForSpawn = true;
-
-        Debug.Log($"Scheduled shield spawn event at: {spawnTime} " +
-            $"(delay: {delay} seconds)");
-    }
-
-    public void ScheduleImmediateSpawn()
-    {
-        ScheduleNextSpawnEvent(0.1f);
-        Debug.Log("Scheduled immediate shield spawn");
+        return base.CanSpawn() && currentSpawnCount < maxSpawnCount;
     }
 
     public float GetNextSpawnTime()

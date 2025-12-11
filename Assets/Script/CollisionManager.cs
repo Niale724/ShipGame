@@ -124,9 +124,11 @@ public class CollisionManager : MonoBehaviour
 
         if (submarine != null)
         {
-            submarine.ShieldStacks++;
+            submarine.CollectShield();
             Debug.Log("Shield Collected " + shieldCollider.gameObject.name);
         }
+
+        Destroy(shieldObj);
     }
 
     private void ObstacleCollision(Collider2D obstacleCollider)
@@ -140,7 +142,7 @@ public class CollisionManager : MonoBehaviour
             damage = obstacle.GetDamage();
         }
 
-        if(submarine != null && submarine.ShieldStacks > 0)
+        if(submarine != null && submarine.HasShield())
         {
             submarine.ConsumeShield();
             Debug.Log("Shield absorbed the damage. Remaining Shields: " + submarine.ShieldStacks);

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -5,21 +7,38 @@ public class Submarine : MonoBehaviour
 {
     //fields
     [SerializeField] private float speed;
+    [SerializeField] private GameObject shieldObj;
 
-   // [SerializeField] private HPSystem hpSystem; // drag and drop the HPSystem class here.
+    // [SerializeField] private HPSystem hpSystem; // drag and drop the HPSystem class here.
+    private Stack<int> shieldStack = new Stack<int>();
     private bool isShieldOn = false;
-    private int shieldStacks = 0;
     private HpSystem hpSystem;
     public int ShieldStacks
     {
-        get=> shieldStacks;
+        get=> shieldStack.Count;
         set
         {
-            shieldStacks=Mathf.Max(0,value);
-            isShieldOn = shieldStacks > 0;
+            if (value > shieldStack.Count)
+            {
+                int addCount = value - shieldStack.Count;
+                for (int i = 0; i < addCount; i++)
+                {
+                    shieldStack.Push(1);
+                }
+            }
+            else if (value < shieldStack.Count)
+            {
+                int removeCount = shieldStack.Count - value;
+                for (int i = 0; i < removeCount; i++)
+                {
+                    if (shieldStack.Count > 0)
+                        shieldStack.Pop();
+                }
+            }
+            isShieldOn = shieldStack.Count > 0;
         }
     }
-    public bool IsShieldActive => isShieldOn;
+    public bool IsShieldActive => shieldStack.Count > 0;
 
     //these fields are for maintaining the submarine on the screen
     private float minX, maxX, minY, maxY;
@@ -57,6 +76,8 @@ public class Submarine : MonoBehaviour
         maxX -= halfWidth;
 
         InitializeHpSystem();
+        if (shieldObj != null)
+            shieldObj.SetActive(false);
     }
 
     // Update is called once per frame
@@ -215,8 +236,11 @@ public class Submarine : MonoBehaviour
     //New method to collect shield
     public void CollectShield()
     {
-        shieldStacks++;
-        Debug.Log($"Shield collected. Available shields: {shieldStacks}");
+        shieldStack.Push(1);
+        isShieldOn = true;
+        if (shieldObj != null)
+            shieldObj.SetActive(true);
+        Debug.Log($"Shield collected. Available shields: {shieldStack.Count}");
         //Additional logic for activating shield effects can be added here
     }
 
@@ -262,16 +286,25 @@ public class Submarine : MonoBehaviour
 
     public void ConsumeShield()
     {
-        if (shieldStacks > 0)
+        if (shieldStack.Count > 0)
         {
-            shieldStacks--;
-            isShieldOn = shieldStacks > 0;
-            Debug.Log($"Shield absorbed damage. Remaining shields: {shieldStacks}");
+            shieldStack.Pop(); ;
+            isShieldOn = shieldStack.Count > 0;
+            Debug.Log($"Shield absorbed damage. Remaining shields: {shieldStack.Count}");
+
+            if (!isShieldOn && shieldObj != null)
+            {
+                shieldObj.SetActive(false);
+            }
         }
         else
         {
             Debug.Log("No shields available to absorb damage.");
         }
+    }
+    public bool HasShield()
+    {
+        return shieldStack.Count > 0;
     }
 
 
