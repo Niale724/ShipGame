@@ -68,7 +68,7 @@ public abstract class BaseSpawner : MonoBehaviour
         }
         
         RegisterSpawnedObject(spawnedObject);
-        Debug.Log("Spawned object: " + spawnedObject.name + " at " + spawnPosition);
+        //Debug.Log("Spawned object: " + spawnedObject.name + " at " + spawnPosition);
     }
 
     protected virtual GameObject SelectedPrefabToSpawn()

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Submarine : MonoBehaviour
 {
-    //fields
+//movement
     [SerializeField] private float speed;
     [SerializeField] private GameObject shieldObj;
 
@@ -13,6 +13,7 @@ public class Submarine : MonoBehaviour
     private Stack<int> shieldStack = new Stack<int>();
     private bool isShieldOn = false;
     private HpSystem hpSystem;
+
     public int ShieldStacks
     {
         get=> shieldStack.Count;
@@ -39,6 +40,11 @@ public class Submarine : MonoBehaviour
         }
     }
     public bool IsShieldActive => shieldStack.Count > 0;
+
+//hp system
+    private HpSystem hpSystem;
+
+//screen boundaries
 
     //these fields are for maintaining the submarine on the screen
     private float minX, maxX, minY, maxY;
@@ -80,7 +86,6 @@ public class Submarine : MonoBehaviour
             shieldObj.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -195,12 +200,16 @@ public class Submarine : MonoBehaviour
         }
     }
 
+//hp system integration
+
     //New methods for HP
     private void InitializeHpSystem()
     {
+         hpSystem = GetComponent<HpSystem>();
+         
         if (hpSystem == null)
         {
-            hpSystem = GetComponent<HpSystem>();
+           
             if (hpSystem == null)
             {
                 Debug.LogError("HpSystem component not found on Submarine GameObject.");
@@ -233,6 +242,9 @@ public class Submarine : MonoBehaviour
         //Additional logic for submarine death can be added here
     }
 
+
+//shield system 
+
     //New method to collect shield
     public void CollectShield()
     {
@@ -243,47 +255,6 @@ public class Submarine : MonoBehaviour
         Debug.Log($"Shield collected. Available shields: {shieldStack.Count}");
         //Additional logic for activating shield effects can be added here
     }
-
-    /*
-    public void ActivateShield(Obstacle obstacle)
-     {
-         if (isShieldOn||shieldStacks > 0)
-         {
-            if (shieldStacks > 0)
-                Debug.Log("Shield absorbed damage");
-            return;
-        }
-         
-         hpSystem.DecreaseHP(obstacle.GetDamage());
-      } 
-    */
-
-    /*
-
-    //bridge with collision system and hp/shield system
-    public void TakeDamage(int damage)
-    {
-        //check if there're shields to absorb the damage
-        
-        if (shieldStacks > 0)
-        {   
-
-            //shield absorbs the damage
-           shieldStacks--;
-           Debug.Log($"Shield absorbed {damage} damage! Shields left: {shieldStacks}");
-           return; 
-
-        }
-        // as there's no shields available, apply the HP system damage
-         if(hpSystem!= null)
-        {
-            hpSystem.DecreaseHP(damage);
-        }
-
-
-    }
-    */
-
     public void ConsumeShield()
     {
         if (shieldStack.Count > 0)

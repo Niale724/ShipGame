@@ -2,16 +2,28 @@
 using System.Collections.Generic;
 using System.Collections;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 public class GameManager: MonoBehaviour
 {   
     //Singleton -- one instance of a class exists on the entire game
     public static GameManager Instance { get; private set; } // all scripts can access this static variable
+   
+//game state
+
+   private int totalFishScoredCollected =0; //tracks total of fish points collected
+   private const int winScore =100; // winning condition
+
+//references
+
+   private HpSystem hpSystem;
+   
+    [SerializeField] private Submarine submarine;
+   
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -25,6 +37,7 @@ public class GameManager: MonoBehaviour
         // Awiats further implementation
     }
 
+//obstacle management
 
     [Header("Active Obstacles")]
     private List <Obstacle> activeObstacle = new List <Obstacle>();
@@ -33,8 +46,6 @@ public class GameManager: MonoBehaviour
 
     [Header("Obstacle Data")]
     private Dictionary<string, int> dataObstacle = new Dictionary<string, int>();
-
-    [Header("Game State")]
 
     private bool isGameRunning = false;
 
@@ -49,12 +60,28 @@ public class GameManager: MonoBehaviour
 
     void Start()
     {
-        Debug.Log("GamaManager Start() called");
+
+         if (submarine !=null)
+        {
+            //gets hp system component
+            hpSystem=submarine.GetComponent<HpSystem>();
+
+            if (hpSystem != null)
+            {
+                hpSystem.OnDeath +=TriggerGameOver; //GameManager executes the HpSystem death event to 
+                //trigger game over
+            }
+
         InitializedObjectData();
         StartGame();
 
-    }   
+    }   }
+
+
+//game state control
+
      public void StartGame()
+
     {
         isGameRunning = true;
         Debug.Log("Game Started");
@@ -66,6 +93,35 @@ public class GameManager: MonoBehaviour
         Debug.Log("Game Stopped");
     }
 
+    
+
+//obstacle data dictionary usage
+    
+
+    //retrieve Obstacle HPvalues to use debug.log
+
+    public int GetObstacleHPValue (string obstacleType)
+    {
+        if(dataObstacle.ContainsKey(obstacleType))
+        {
+         return dataObstacle[obstacleType];
+        }
+        else
+        {
+            Debug.Log("This obstacle type wasn't found" + obstacleType);
+            return 0;
+        }
+    }
+
+//obstacle list management
+    public void RegisterObstacle(Obstacle obstacle)
+    {
+        
+        if (obstacle!=null && !activeObstacle.Contains(obstacle))
+        {
+            activeObstacle.Add(obstacle);
+        }
+    }
 
     //it removes obstacles from the list
     public void RemoveObstacle(Obstacle obstacle)
@@ -75,8 +131,6 @@ public class GameManager: MonoBehaviour
             activeObstacle.Remove(obstacle);
         }
     }
-
-
 
     //when doing the game over screen we need to empty the entire list 
 
@@ -93,37 +147,76 @@ public class GameManager: MonoBehaviour
         activeObstacle.Clear(); //clears the list 
     }
 
-
-    //might take out, returns the list of active obstacle
+     //might take out, returns the list of active obstacle
     public List<Obstacle> GetActiveObstacles()
     {
         return activeObstacle;
     }
     
 
-    //retrieve Obstacle HPvalues to use dubug.log
-
-    public int GetObstacleHPValue (string obstacleType)
+//damage system
+public void TakeDamage(int damage)
     {
-        if(dataObstacle.ContainsKey(obstacleType))
+        //checks if there're shields 
+        if (submarine.ShieldStacks > 0)
         {
-         return dataObstacle[obstacleType];
+            submarine.ConsumeShield();
+            Debug.Log($"Shield absorbed{damage} damage!");
+            return; // if there is, no HP is taken
         }
-        else
+        //if not, the HP is applied
+        if (hpSystem != null)
         {
-            Debug.Log("This obstacle type wasn't found" + obstacleType);
-            return 0;
+            hpSystem.DecreaseHP(damage);
         }
+        
     }
 
 
-    public void RegisterObstacle(Obstacle obstacle)
+//score tracking
+public void FishCollected (BaseFish fish)
+    {
+        totalFishScoredCollected += fish.PtValue;
+        IsWin();
+    }
+
+
+private void IsWin()
     {
         
-        if (obstacle!=null && !activeObstacle.Contains(obstacle))
+        if (totalFishScoredCollected>= winScore)
         {
-            activeObstacle.Add(obstacle);
-            Debug.Log($"Obstacle registered with GamaManager: {obstacle.name}");
+         TriggerVictory();   
         }
     }
-}
+
+
+//game over handling
+
+    //these two methods handle victory or defeat
+private void TriggerGameOver()
+    {
+        StopGame();
+
+        //saves data for the gameoverscene
+        PlayerPrefs.SetInt("FinalScore", totalFishScoredCollected);
+        PlayerPrefs.SetInt("FinalHP", hpSystem !=null ? hpSystem.GetCurrentHp() :0);
+        PlayerPrefs.SetString("GameResult", "Defeat");
+        PlayerPrefs.Save();
+
+        //load the gameoverscene
+        SceneManager.LoadScene("GameOverScene");
+    }
+private void TriggerVictory()
+    {   StopGame();
+
+        //saves data for the gameoverscene
+        PlayerPrefs.SetInt("FinalScore", totalFishScoredCollected);
+        PlayerPrefs.SetInt("FinalHP", hpSystem !=null ? hpSystem.GetCurrentHp() :0);
+        PlayerPrefs.SetString("GameResult", "Victory");
+        PlayerPrefs.Save();
+
+        //load the gameoverscene
+        SceneManager.LoadScene("GameOverScene");
+    }
+    }
