@@ -10,6 +10,9 @@ public class HpSystem : MonoBehaviour
     public System.Action<int,int> OnHpChanged;
     public System.Action OnDeath;
     public int CurrentHp => currentHp;
+
+    
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -56,4 +59,18 @@ public class HpSystem : MonoBehaviour
             OnDeath?.Invoke();
         }
     }
+
+    /*private void CheckGameOver()
+    {
+        if (currentHp <=0){
+
+           int currentFishScore = Ptvalue
+
+            if(gameManager != null)
+            {
+                gameManager.TriggerGameOver(currentHp, c)
+            }
+        }
+
+    }*/
 }
