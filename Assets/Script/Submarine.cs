@@ -41,9 +41,6 @@ public class Submarine : MonoBehaviour
     }
     public bool IsShieldActive => shieldStack.Count > 0;
 
-//hp system
-    private HpSystem hpSystem;
-
 //screen boundaries
 
     //these fields are for maintaining the submarine on the screen
