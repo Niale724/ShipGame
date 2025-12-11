@@ -23,8 +23,7 @@ public class ShieldSpawner : BaseSpawner
     {
         if (!isActive) return;
         spawnTimer += Time.deltaTime;
-        Debug.Log($"[BaseSpawner] Timer: {spawnTimer:F2}, Interval: {spawnInterval}, " +
-              $"CurrentCount: {currentSpawnCount}, CanSpawn: {CanSpawn()}");
+        
         if (spawnTimer >= spawnInterval && CanSpawn())
         {
             Debug.Log("[BaseSpawner] Auto-spawn triggered!");

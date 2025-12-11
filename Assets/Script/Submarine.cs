@@ -275,5 +275,18 @@ public class Submarine : MonoBehaviour
         return shieldStack.Count > 0;
     }
 
+    public void TakeDamage(int amount)
+    {
+        if (HasShield())
+        {
+            ConsumeShield();
+            return;
+        }
+
+        if (hpSystem != null)
+        {
+            hpSystem.DecreaseHP(amount);
+        }
+    }
 
 }

@@ -15,11 +15,27 @@ public class CollisionManager : MonoBehaviour
     {
         Debug.Log("Collision Manager started working");
     }
+<<<<<<< Updated upstream
+=======
+    //rigidbody2d unity this object participated IN PHYSICS.
+    //collider2d defines the collision SHAPE.
+
+    //use ontrigger because you DETECT when things touch
+    //cause submarine is BOUNCING OFF obstacles
+
+    private void OnTriggerEnter2D(Collider2D another)
+    {
+        SubmarineCollision(another);
+    }
+
+
+>>>>>>> Stashed changes
     // this function determines what type of object hits the submarine and take it to the appropiate handler
 
     //we do this by the usage of tags 
     public void SubmarineCollision(Collider2D otherCollider)
     {
+        Debug.Log("Hit: " + otherCollider.tag);
         if (otherCollider == null)
         {
             Debug.Log("CollisionManager received a null collider");
