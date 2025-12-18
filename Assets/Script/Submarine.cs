@@ -253,7 +253,7 @@ public class Submarine : MonoBehaviour
         Debug.Log($"Shield collected. Available shields: {shieldStack.Count}");
         //Additional logic for activating shield effects can be added here
         OnShieldChanged?.Invoke(ShieldStacks);
-
+        shieldObj.SetActive(true);
     }
     public void ConsumeShield()
     {
@@ -273,7 +273,8 @@ public class Submarine : MonoBehaviour
         {
             Debug.Log("No shields available to absorb damage.");
         }
-  
+        shieldObj.SetActive(false);
+
 
     }
     public bool HasShield()
